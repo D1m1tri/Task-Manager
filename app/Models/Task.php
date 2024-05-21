@@ -16,4 +16,9 @@ class Task extends Model
         'completed_at',
         'owner_id',
     ];
+
+    public function assignees()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

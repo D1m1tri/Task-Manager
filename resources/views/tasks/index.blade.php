@@ -9,10 +9,17 @@
 
         <ul>
             @foreach ($users as $user)
-                <h2>{{ $user->name }}</h2>
+                <h2>{{ $user->name }} Tasks</h2>
                 <ul>
                 @foreach ($user->tasks as $task)
-                    <li>{{ $task->task }}</li>
+                    <li>{{ $task->task }} - {{ $task->description }}</li>
+                    <h3>Assignees</h3>
+                    <ul>
+                        @foreach ($task->assignees as $assignee)
+                            <li>{{ $assignee->name }}</li>
+                        @endforeach
+                    </ul>
+
                 @endforeach
                 </ul>
             @endforeach

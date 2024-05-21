@@ -29,5 +29,11 @@ class DatabaseSeeder extends Seeder
             'completed_at' => null,
             'owner_id' => 1,
         ]);
+
+        // Attach the task to the user
+        $user = User::find(1);
+        $task = Task::find(1);
+
+        $user->assignedTasks()->attach($task->id);
     }
 }
