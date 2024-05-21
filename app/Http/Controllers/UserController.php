@@ -4,71 +4,96 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Login and register form
+    public function showLoginForm()
     {
-        $users = User::all();
-        $data = [];
-        foreach ($users as $user) {
-            $data[] = [
-                'name' => $user->name,
-                'tasks' => $user->tasks,
-            ];
+        return view('auth.login');
+    }
+
+    // Login function
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->route('task_list');
         }
 
-        return response()->json($data);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // register function
+    public function register(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('task_list');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Change password form
+    public function showChangePasswordForm()
     {
-        //
+        return view('auth.change-password');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
+    // Change password function
+    public function changePassword(Request $request)
     {
-        //
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        $user = Auth::user();
+
+        if (!\Hash::check($request->old_password, $user->password)) {
+            return back()->withErrors([
+                'old_password' => 'The provided password does not match our records.',
+            ]);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->route('task_list');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
+    // logout function
+    public function logout()
     {
-        //
+        Auth::logout();
+
+        return redirect()->route('login');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
+    // delete user
+    public function delete($id)
     {
-        //
+        User::destroy($id);
+
+        return redirect()->route('login');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
-    }
 }
