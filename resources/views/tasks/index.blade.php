@@ -27,5 +27,6 @@
         <button onclick="window.location='{{ route('logout') }}'">Logout</button>
         <button onclick="window.location='{{ route('delete_user', ['id' => Auth::user()->id]) }}'">Delete Account</button>
         <button onclick="window.location='{{ route('change_password') }}'">Change Password</button>
+        <button onclick="window.location='{{ route('create_task') }}'">Create Task</button>
     </body>
 </html>
