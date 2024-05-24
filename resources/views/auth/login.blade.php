@@ -6,14 +6,14 @@
 
     <body>
         <h1>Login</h1>
-        <form action="{{ route('login') }}" method="post">
+        <form action="{{ route('user.login') }}" method="post">
             @csrf
             <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
         <h1>Register</h1>
-        <form action="{{ route('register') }}" method="post">
+        <form action="{{ route('user.register') }}" method="post">
             @csrf
             <input type="text" name="name" placeholder="Name" required>
             <input type="text" name="email" placeholder="Email" required>

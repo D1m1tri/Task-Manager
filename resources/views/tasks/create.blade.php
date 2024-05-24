@@ -7,7 +7,7 @@
   <body>
     <h1>@if (isset($task)) Edit Task @else Create Task @endif</h1>
 
-    <form method="POST" action="{{ route('store_task') }}">
+    <form method="POST" action="{{ route('tasks.store') }}">
       @csrf
       @if (isset($task))
         <input type="hidden" name="id" value="{{ $task->id }}">
@@ -40,7 +40,7 @@
       </div>
 
       <button type="submit">@if (isset($task)) Update Task @else Create Task @endif</button>
-      <button type="button" onclick="window.location='{{ route('task_list') }}'">Cancel</button>
+      <button type="button" onclick="window.location='{{ route('home') }}'">Cancel</button>
     </form>
 
 

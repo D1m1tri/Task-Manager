@@ -7,21 +7,22 @@ use App\Http\Controllers\TaskController;
 
 // force auth middleware
 Route::middleware(['auth'])->group(function () {
-  Route::get('/', [TaskController::class, 'index'])->name('task_list');
+  Route::get('/', [TaskController::class, 'showTasks'])->name('home');
 
 
-  Route::get('tasks/create', [TaskController::class, 'create'])->name('create_task');
-  Route::post('tasks/store', [TaskController::class, 'store'])->name('store_task');
-  Route::get('tasks/edit/{id}', [TaskController::class, 'edit'])->name('edit_task');
-  Route::get('tasks/delete/{id}', [TaskController::class, 'delete'])->name('delete_task');
+  Route::get('tasks', [TaskController::class, 'index'])->name('tasks.list');
+  Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+  Route::post('tasks/store', [TaskController::class, 'store'])->name('tasks.store');
+  Route::get('tasks/edit/{id}', [TaskController::class, 'edit'])->name('tasks.edit');
+  Route::get('tasks/delete/{id}', [TaskController::class, 'delete'])->name('tasks.delete');
 
 
-  Route::get('change-password', [UserController::class, 'showChangePasswordForm'])->name('change_password');
-  Route::post('password', [UserController::class, 'changePassword'])->name('password');
-  Route::get('logout', [UserController::class, 'logout'])->name('logout');
-  Route::get('remove/{id}', [UserController::class, 'delete'])->name('delete_user');
+  Route::get('password', [UserController::class, 'showChangePasswordForm'])->name('user.password');
+  Route::post('password', [UserController::class, 'changePassword'])->name('user.password');
+  Route::get('logout', [UserController::class, 'logout'])->name('user.logout');
+  Route::get('remove/{id}', [UserController::class, 'delete'])->name('user.delete');
 });
 
-Route::get('login', [UserController::class, 'showLoginForm'])->name('login');
-Route::post('login', [UserController::class, 'login'])->name('login');
-Route::post('register', [UserController::class, 'register'])->name('register');
+Route::get('login', [UserController::class, 'showLoginForm'])->name('user.login');
+Route::post('login', [UserController::class, 'login'])->name('user.login');
+Route::post('register', [UserController::class, 'register'])->name('user.register');

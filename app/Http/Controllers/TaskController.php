@@ -13,20 +13,29 @@ class TaskController extends Controller
   // show all users and tasks
   public function index()
   {
-    $users = User::all();
+    $tasks = Task::all();
+    $user = Auth::user();
 
     return view('tasks.index', [
-      'users' => $users
+      'tasks' => $tasks,
+      'user' => $user
     ]);
   }
 
   // show all tasks for the authenticated user
   public function showTasks()
   {
-    $tasks = Auth::user()->tasks;
+    $ownedTasks = Auth::user()->tasks;
+    $assignedTasks = Auth::user()->assignedTasks;
 
-    return view('tasks.show', [
-      'tasks' => $tasks
+    // remove the owner field from the owned tasks
+    foreach ($ownedTasks as $task) {
+      $task->owner = null;
+    }
+
+    return view('tasks.home', [
+      'ownedTasks' => $ownedTasks,
+      'assignedTasks' => $assignedTasks
     ]);
   }
 
@@ -60,7 +69,7 @@ class TaskController extends Controller
     if ($request->has('id')) {
       $task = Task::find($request->id);
       if (is_null($task)) {
-        return redirect()->route('task_list');
+        return redirect()->route('home');
       }
     }
     else {
@@ -92,7 +101,7 @@ class TaskController extends Controller
       $task->save();
     }
 
-    return redirect()->route('task_list');
+    return redirect()->route('home');
   }
 
   // edit a task
@@ -110,7 +119,13 @@ class TaskController extends Controller
   public function delete($id)
   {
     $task = Task::find($id);
+    if (is_null($task)) {
+      return redirect()->route('home');
+    }
+    if ($task->owner_id != Auth::id()) {
+      return redirect()->route('home');
+    }
     $task->delete();
-    return redirect()->route('task_list');
+    return redirect()->route('home');
   }
 }

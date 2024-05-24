@@ -22,7 +22,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('task_list');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
@@ -48,7 +48,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('task_list');
+        return redirect()->route('home');
     }
 
     // Change password form
@@ -77,7 +77,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect()->route('task_list');
+        return redirect()->route('home');
     }
 
     // logout function
@@ -85,7 +85,7 @@ class UserController extends Controller
     {
         Auth::logout();
 
-        return redirect()->route('login');
+        return redirect()->route('user.login');
     }
 
     // delete user
@@ -93,7 +93,7 @@ class UserController extends Controller
     {
         User::destroy($id);
 
-        return redirect()->route('login');
+        return redirect()->route('user.login');
     }
 
 }

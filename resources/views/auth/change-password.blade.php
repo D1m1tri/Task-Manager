@@ -7,7 +7,7 @@
     <body>
         <h1>Change Password</h1>
 
-        <form method="POST" action="{{ route('password') }}">
+        <form method="POST" action="{{ route('user.password') }}">
             @csrf
             <label for="Old Password">Old Password</label>
             <input type="password" id="old_password" name="old_password" required>
@@ -17,6 +17,6 @@
             <input type="password" id="password_confirmation" name="password_confirmation" required>
             <button type="submit">Change Password</button>
         </form>
-        <button onclick="window.location='{{ route('task_list') }}'">Back</button>
+        <button onclick="window.location='{{ route('home') }}'">Back</button>
     </body>
 </html>
