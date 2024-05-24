@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+
             $table->string('task');
             $table->text('description')->nullable();
-            $table->boolean('completed')->default(false);
+
+            // add a status column: 0 = not started, 1 = in progress, 2 = completed, 3 = suspended
+            $table->tinyInteger('status')->default(0);
             $table->timestamp('completed_at')->nullable();
         });
     }
