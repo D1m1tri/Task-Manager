@@ -48,13 +48,13 @@ class TaskController extends Controller
     ]);
 
     if ($request->has('id')) {
-      $oldTask = Task::find($request->id);
-      if (is_null($oldTask)) {
+      $task = Task::find($request->id);
+      if (is_null($task)) {
         return redirect()->route('task_list');
       }
-      $oldTask->task = $request->task;
-      $oldTask->description = $request->description;
-      $oldTask->save();
+      $task->task = $request->task;
+      $task->description = $request->description;
+      $task->save();
     }
     else {
       $task = new Task();
@@ -66,9 +66,31 @@ class TaskController extends Controller
     $assignees = $request->assignees;
     // remove repeated assignees
     $assignees = array_unique($assignees);
-    foreach ($assignees as $assignee) {
-      $task->assignees()->attach($assignee);
-    }
+    // remove null values
+    $assignees = array_filter($assignees);
+
+    // assign the task to the selected users, removing the previous assignees
+    $task->assignees()->sync($assignees);
+
+    return redirect()->route('task_list');
+  }
+
+  // edit a task
+  public function edit($id)
+  {
+    $task = Task::find($id);
+    $users = User::all();
+    return view('tasks.create', [
+      'task' => $task,
+      'users' => $users
+    ]);
+  }
+
+  // delete a task
+  public function delete($id)
+  {
+    $task = Task::find($id);
+    $task->delete();
     return redirect()->route('task_list');
   }
 }

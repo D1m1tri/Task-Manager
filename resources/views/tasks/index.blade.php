@@ -13,6 +13,8 @@
                 <ul>
                 @foreach ($user->tasks as $task)
                     <li>{{ $task->task }} - {{ $task->description }}</li>
+                    <button onclick="window.location='{{ route('delete_task', ['id' => $task->id]) }}'">Delete Task</button>
+                    <button onclick="window.location='{{ route('edit_task', ['id' => $task->id]) }}'">Edit Task</button>
                     <h3>Assignees</h3>
                     <ul>
                         @foreach ($task->assignees as $assignee)
