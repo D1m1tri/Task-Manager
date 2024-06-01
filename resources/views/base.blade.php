@@ -7,8 +7,7 @@
         <title>@yield('title')</title>
     </head>
     <body>
-        <!-- Header: if on mobile, the navbar moves to the bottom -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle position-fixed w-100">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ route('home') }}">Navbar</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +34,7 @@
                 </div>
             </div>
         </nav>
-        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="d-flex justify-content-center align-items-center h-100" style="padding-top: 70px;">
             @yield('content')
         </div>
     </body>

@@ -14,26 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+        $this->call([
+            UserSeeder::class,
+            TaskSeeder::class,
         ]);
-
-        Task::create([
-            'task' => 'Test Task',
-            'description' => 'This is a test task.',
-            'status' => 0,
-            'completed_at' => null,
-            'owner_id' => 1,
-        ]);
-
-        // Attach the task to the user
-        $user = User::find(1);
-        $task = Task::find(1);
-
-        $user->assignedTasks()->attach($task->id);
     }
 }
