@@ -5,6 +5,15 @@
         <div class="d-flex justify-content-between">
             <h1>Task List</h1>
             <div class="d-flex">
+                <form method=POST action="{{ route('tasks.search') }}" class="mx-2 my-2 h-100">
+                    @csrf
+                    <select name="user_id" onchange="this.form.submit()" class="form-select h-80">
+                        <option value="">Select User</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </form>
                 <button onclick="window.location='{{ route('home') }}'" class="m-1 my-2 btn btn-primary">Home</button>
             </div>
         </div>

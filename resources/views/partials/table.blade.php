@@ -2,7 +2,7 @@
     <td>{{ $task->task }}</td>
     <td>{{ $task->description }}</td>
     <td>
-        @if ($owner_ids->count() == 1 or $task->owner->id == Auth::user()->id or $task->assignees->contains(Auth::user()->id))
+        @if ($task->owner_id == Auth::user()->id or $task->assignees->contains(Auth::user()->id))
             <form method="POST" action="{{ route('tasks.store') }}">
                 @csrf
                 <input type="hidden" name="id" value="{{ $task->id }}">

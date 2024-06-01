@@ -15,10 +15,44 @@ class TaskController extends Controller
   {
     $tasks = Task::all();
     $user = Auth::user();
+    $users = User::all();
 
     return view('tasks.index', [
       'tasks' => $tasks,
-      'user' => $user
+      'user' => $user,
+      'users' => $users
+    ]);
+  }
+
+  // search for user's tasks
+  public function search(Request $request)
+  {
+    $user = User::find($request->user_id);
+    if (is_null($user)) {
+      return redirect()->route('tasks.list');
+    }
+
+    echo $user->id;
+    return redirect()->route('tasks.show', ['id' => $user->id]);
+  }
+
+  // show all tasks for a specific user
+  public function show($id)
+  {
+    $user = User::find($id);
+    if (is_null($user)) {
+      return redirect()->route('tasks.list');
+    }
+
+    $ownedTasks = $user->tasks;
+    $assignedTasks = $user->assignedTasks;
+    $users = User::all();
+
+    return view('tasks.single', [
+      'ownedTasks' => $ownedTasks,
+      'assignedTasks' => $assignedTasks,
+      'user' => $user,
+      'users' => $users
     ]);
   }
 
@@ -33,9 +67,12 @@ class TaskController extends Controller
       $task->owner = null;
     }
 
+    $authUser = Auth::user();
+
     return view('tasks.home', [
       'ownedTasks' => $ownedTasks,
-      'assignedTasks' => $assignedTasks
+      'assignedTasks' => $assignedTasks,
+      'aUser' => $authUser
     ]);
   }
 
